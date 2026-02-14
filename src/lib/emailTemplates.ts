@@ -15,6 +15,13 @@ function replaceCustomFields(text: string, data: EmailData): string {
   return result;
 }
 
+function headerContent(data: EmailData, textStyle: string): string {
+  if (data.headerMode === "image" && data.headerLogo) {
+    return `<img src="${data.headerLogo}" alt="${data.headerCompany}" style="max-height:50px;max-width:200px;" />`;
+  }
+  return `<span style="${textStyle}">${data.headerCompany}</span>`;
+}
+
 export function generateCorporateHTML(data: EmailData): string {
   const body = replaceCustomFields(data.body, data);
   return `<!DOCTYPE html>
@@ -26,7 +33,7 @@ export function generateCorporateHTML(data: EmailData): string {
 <tr><td align="center">
 <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:0;">
 ${isSectionEnabled(data, "header") ? `<tr><td style="background-color:${data.primaryColor};padding:28px 40px;">
-<table width="100%"><tr><td style="color:#ffffff;font-size:20px;font-weight:bold;letter-spacing:0.5px;">${data.headerCompany}</td></tr></table>
+<table width="100%"><tr><td style="color:#ffffff;font-size:20px;font-weight:bold;letter-spacing:0.5px;">${headerContent(data, "color:#ffffff;font-size:20px;font-weight:bold;letter-spacing:0.5px;")}</td></tr></table>
 </td></tr>` : ""}
 ${isSectionEnabled(data, "title") ? `<tr><td style="padding:36px 40px 12px;border-bottom:2px solid ${data.primaryColor};">
 <h1 style="margin:0;font-size:24px;color:${data.primaryColor};font-weight:700;">${data.title}</h1>
@@ -50,7 +57,7 @@ export function generateModernHTML(data: EmailData): string {
 <tr><td align="center">
 <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
 ${isSectionEnabled(data, "header") ? `<tr><td style="background:linear-gradient(135deg,${data.primaryColor},${data.primaryColor}cc);padding:32px 40px;">
-<table width="100%"><tr><td style="color:#ffffff;font-size:22px;font-weight:700;">${data.headerCompany}</td></tr></table>
+<table width="100%"><tr><td style="color:#ffffff;font-size:22px;font-weight:700;">${headerContent(data, "color:#ffffff;font-size:22px;font-weight:700;")}</td></tr></table>
 </td></tr>` : ""}
 ${isSectionEnabled(data, "title") ? `<tr><td style="padding:36px 40px 16px;">
 <h1 style="margin:0;font-size:26px;color:#1e293b;font-weight:700;">${data.title}</h1>
@@ -75,7 +82,7 @@ export function generateMinimalHTML(data: EmailData): string {
 <tr><td align="center">
 <table width="560" cellpadding="0" cellspacing="0">
 ${isSectionEnabled(data, "header") ? `<tr><td style="padding:0 0 24px;border-bottom:1px solid #e5e5e5;">
-<span style="font-size:14px;letter-spacing:3px;text-transform:uppercase;color:${data.primaryColor};font-weight:600;">${data.headerCompany}</span>
+${headerContent(data, "font-size:14px;letter-spacing:3px;text-transform:uppercase;color:" + data.primaryColor + ";font-weight:600;")}
 </td></tr>` : ""}
 ${isSectionEnabled(data, "title") ? `<tr><td style="padding:32px 0 8px;">
 <h1 style="margin:0;font-size:28px;color:#111827;font-weight:400;line-height:1.3;">${data.title}</h1>
@@ -99,7 +106,7 @@ export function generateBoldHTML(data: EmailData): string {
 <tr><td align="center">
 <table width="600" cellpadding="0" cellspacing="0" style="background-color:#1f2937;border-radius:8px;overflow:hidden;">
 ${isSectionEnabled(data, "header") ? `<tr><td style="background-color:${data.primaryColor};padding:20px 40px;">
-<span style="color:#ffffff;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">${data.headerCompany}</span>
+${headerContent(data, "color:#ffffff;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;")}
 </td></tr>` : ""}
 ${isSectionEnabled(data, "title") ? `<tr><td style="padding:40px 40px 16px;">
 <h1 style="margin:0;font-size:32px;color:#ffffff;font-weight:900;line-height:1.2;text-transform:uppercase;">${data.title}</h1>
