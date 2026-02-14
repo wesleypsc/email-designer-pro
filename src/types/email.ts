@@ -12,6 +12,7 @@ export interface CustomField {
 
 export interface EmailData {
   templateId: string;
+  headerMode: "text" | "image";
   headerLogo: string;
   headerCompany: string;
   title: string;
@@ -69,8 +70,20 @@ export const TEMPLATES: EmailTemplate[] = [
   },
 ];
 
+export const ELEMENTOR_FIELDS = [
+  { tag: "[field id=\"name\"]", label: "Nome" },
+  { tag: "[field id=\"email\"]", label: "E-mail" },
+  { tag: "[field id=\"message\"]", label: "Mensagem" },
+  { tag: "[field id=\"phone\"]", label: "Telefone" },
+  { tag: "[field id=\"company\"]", label: "Empresa" },
+  { tag: "[field id=\"date\"]", label: "Data" },
+  { tag: "[field id=\"url\"]", label: "URL" },
+  { tag: "[field id=\"address\"]", label: "Endereço" },
+];
+
 export const DEFAULT_EMAIL_DATA: EmailData = {
   templateId: "corporate",
+  headerMode: "text",
   headerLogo: "",
   headerCompany: "Sua Empresa",
   title: "Título do E-mail",

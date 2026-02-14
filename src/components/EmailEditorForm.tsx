@@ -1,10 +1,16 @@
-import { EmailData, CustomField } from "@/types/email";
+import { EmailData, CustomField, ELEMENTOR_FIELDS } from "@/types/email";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Image, Type } from "lucide-react";
+import RichTextEditor from "@/components/RichTextEditor";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 
 interface EmailEditorFormProps {
   data: EmailData;
@@ -33,10 +39,7 @@ const EmailEditorForm = ({ data, onChange }: EmailEditorFormProps) => {
     });
   };
 
-  const updateCustomField = (
-    id: string,
-    partial: Partial<CustomField>
-  ) => {
+  const updateCustomField = (id: string, partial: Partial<CustomField>) => {
     update({
       customFields: data.customFields.map((f) =>
         f.id === id ? { ...f, ...partial } : f
@@ -109,17 +112,87 @@ const EmailEditorForm = ({ data, onChange }: EmailEditorFormProps) => {
           <h3 className="text-sm font-semibold text-foreground font-display">
             Cabeçalho
           </h3>
-          <div>
-            <Label className="text-xs text-muted-foreground">
-              Nome da Empresa
-            </Label>
-            <Input
-              value={data.headerCompany}
-              onChange={(e) => update({ headerCompany: e.target.value })}
-              placeholder="Sua Empresa"
-              className="mt-1"
-            />
-          </div>
+          <Tabs
+            value={data.headerMode}
+            onValueChange={(v) =>
+              update({ headerMode: v as "text" | "image" })
+            }
+          >
+            <TabsList className="w-full">
+              <TabsTrigger value="text" className="flex-1 gap-1.5">
+                <Type className="w-3.5 h-3.5" />
+                Texto
+              </TabsTrigger>
+              <TabsTrigger value="image" className="flex-1 gap-1.5">
+                <Image className="w-3.5 h-3.5" />
+                Imagem
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="text" className="mt-3">
+              <Label className="text-xs text-muted-foreground">
+                Nome da Empresa
+              </Label>
+              <Input
+                value={data.headerCompany}
+                onChange={(e) => update({ headerCompany: e.target.value })}
+                placeholder="Sua Empresa"
+                className="mt-1"
+              />
+            </TabsContent>
+            <TabsContent value="image" className="mt-3 space-y-2">
+              <Label className="text-xs text-muted-foreground">
+                URL da Imagem (Logo)
+              </Label>
+              <Input
+                value={data.headerLogo}
+                onChange={(e) => update({ headerLogo: e.target.value })}
+                placeholder="https://exemplo.com/logo.png"
+                className="mt-1"
+              />
+              {data.headerLogo && (
+                <div className="p-3 bg-muted/50 rounded-md flex items-center justify-center">
+                  <img
+                    src={data.headerLogo}
+                    alt="Preview do logo"
+                    className="max-h-16 max-w-full object-contain"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                </div>
+              )}
+              <p className="text-xs text-muted-foreground">
+                Use serviços como{" "}
+                <a
+                  href="https://imgbb.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent underline"
+                >
+                  ImgBB
+                </a>
+                ,{" "}
+                <a
+                  href="https://imgur.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent underline"
+                >
+                  Imgur
+                </a>{" "}
+                ou{" "}
+                <a
+                  href="https://postimages.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent underline"
+                >
+                  PostImages
+                </a>{" "}
+                para hospedar sua imagem gratuitamente.
+              </p>
+            </TabsContent>
+          </Tabs>
         </div>
       )}
 
@@ -137,21 +210,21 @@ const EmailEditorForm = ({ data, onChange }: EmailEditorFormProps) => {
         </div>
       )}
 
-      {/* Body */}
+      {/* Body - Rich Text */}
       {isSectionEnabled("body") && (
         <div className="rounded-lg border border-border bg-card p-4 space-y-3 animate-fade-in">
           <h3 className="text-sm font-semibold text-foreground font-display">
             Corpo do E-mail
           </h3>
-          <Textarea
+          <RichTextEditor
             value={data.body}
-            onChange={(e) => update({ body: e.target.value })}
-            placeholder="Conteúdo HTML do e-mail..."
-            rows={8}
-            className="font-mono text-sm"
+            onChange={(html) => update({ body: html })}
+            placeholder="Conteúdo do e-mail..."
+            minHeight="180px"
+            showElementorFields
           />
           <p className="text-xs text-muted-foreground">
-            Use HTML para formatação. Campos personalizados: {`{{nome_do_campo}}`}
+            Campos personalizados: {`{{nome_do_campo}}`} · Campos Elementor via botão "Campos"
           </p>
         </div>
       )}
@@ -214,20 +287,19 @@ const EmailEditorForm = ({ data, onChange }: EmailEditorFormProps) => {
         ))}
       </div>
 
-      {/* Footer */}
+      {/* Footer - Rich Text */}
       {isSectionEnabled("footer") && (
         <div className="rounded-lg border border-border bg-card p-4 space-y-3 animate-fade-in">
           <h3 className="text-sm font-semibold text-foreground font-display">
             Rodapé
           </h3>
-          <div>
-            <Label className="text-xs text-muted-foreground">Texto</Label>
-            <Input
-              value={data.footerText}
-              onChange={(e) => update({ footerText: e.target.value })}
-              className="mt-1"
-            />
-          </div>
+          <RichTextEditor
+            value={data.footerText}
+            onChange={(html) => update({ footerText: html })}
+            placeholder="Texto do rodapé..."
+            minHeight="80px"
+            showElementorFields={false}
+          />
           <div>
             <Label className="text-xs text-muted-foreground">Links</Label>
             <Input
