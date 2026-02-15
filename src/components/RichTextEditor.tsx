@@ -34,6 +34,7 @@ interface RichTextEditorProps {
   placeholder?: string;
   minHeight?: string;
   showElementorFields?: boolean;
+  customFields?: { id: string; label: string; value: string }[];
 }
 
 const ToolbarButton = ({
@@ -64,9 +65,11 @@ const ToolbarButton = ({
 const Toolbar = ({
   editor,
   showElementorFields,
+  customFields,
 }: {
   editor: Editor;
   showElementorFields?: boolean;
+  customFields?: { id: string; label: string; value: string }[];
 }) => {
   const setLink = useCallback(() => {
     const url = window.prompt("URL do link:");
@@ -197,6 +200,37 @@ const Toolbar = ({
           </DropdownMenu>
         </>
       )}
+      {customFields && customFields.length > 0 && (
+        <>
+          <div className="w-px h-5 bg-border mx-1" />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-7 text-xs gap-1 px-2"
+              >
+                <Tag className="w-3 h-3" />
+                Meus Campos
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="min-w-[160px]">
+              {customFields.map((field) => (
+                <DropdownMenuItem
+                  key={field.id}
+                  onClick={() => insertElementorField(`{{${field.label}}}`)}
+                  className="text-xs font-mono"
+                >
+                  <span className="mr-2">{field.label}</span>
+                  <span className="text-muted-foreground ml-auto">
+                    {`{{${field.label}}}`}
+                  </span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </>
+      )}
     </div>
   );
 };
@@ -207,6 +241,7 @@ const RichTextEditor = ({
   placeholder,
   minHeight = "150px",
   showElementorFields = true,
+  customFields,
 }: RichTextEditorProps) => {
   const isInternalUpdate = useRef(false);
 
@@ -237,7 +272,7 @@ const RichTextEditor = ({
 
   return (
     <div className="rounded-md border border-input overflow-hidden bg-background">
-      <Toolbar editor={editor} showElementorFields={showElementorFields} />
+      <Toolbar editor={editor} showElementorFields={showElementorFields} customFields={customFields} />
       <EditorContent
         editor={editor}
         className="prose prose-sm max-w-none px-3 py-2 text-sm focus-within:outline-none [&_.tiptap]:outline-none [&_.tiptap]:min-h-[var(--min-h)]"

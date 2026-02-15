@@ -222,6 +222,7 @@ const EmailEditorForm = ({ data, onChange }: EmailEditorFormProps) => {
             placeholder="Conteúdo do e-mail..."
             minHeight="180px"
             showElementorFields
+            customFields={data.customFields}
           />
           <p className="text-xs text-muted-foreground">
             Campos personalizados: {`{{nome_do_campo}}`} · Campos Elementor via botão "Campos"
