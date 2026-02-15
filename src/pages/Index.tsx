@@ -4,6 +4,7 @@ import { generateHTML } from "@/lib/emailTemplates";
 import TemplateSelector from "@/components/TemplateSelector";
 import EmailEditorForm from "@/components/EmailEditorForm";
 import EmailPreview from "@/components/EmailPreview";
+import SaveLoadTemplates from "@/components/SaveLoadTemplates";
 import { Button } from "@/components/ui/button";
 import { Copy, Check, Code, Eye, PanelLeftClose, PanelLeft } from "lucide-react";
 import { toast } from "sonner";
@@ -52,11 +53,12 @@ const Index = () => {
               Gerador de HTML para e-mails
             </p>
           </div>
-          <div className="flex-1 overflow-y-auto scrollbar-thin p-4">
+          <div className="flex-1 overflow-y-auto scrollbar-thin p-4 space-y-4">
             <TemplateSelector
               selectedId={data.templateId}
               onSelect={selectTemplate}
             />
+            <SaveLoadTemplates data={data} onLoad={setData} />
           </div>
         </div>
       </aside>

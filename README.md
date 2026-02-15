@@ -1,73 +1,86 @@
-# Welcome to your Lovable project
+# ✉️ Email Builder
 
-## Project info
+Gerador de HTML para e-mails institucionais com editor visual WYSIWYG, múltiplos templates e suporte a campos dinâmicos.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 🚀 Funcionalidades
 
-## How can I edit this code?
+### Templates
+- **Corporativo** — Estilo formal com cores sóbrias e layout limpo
+- **Moderno** — Design contemporâneo com gradientes e bordas arredondadas
+- **Minimalista** — Layout clean com foco no conteúdo textual
+- **Comunicado** — Visual impactante para anúncios e comunicados
 
-There are several ways of editing your application.
+### Editor
+- Editor Rich Text (WYSIWYG) via **Tiptap** para corpo e rodapé
+- Formatação: negrito, itálico, sublinhado, alinhamento, listas, links, cores
+- Cabeçalho flexível: texto (nome da empresa) ou imagem (URL de logo)
+- Seções ativáveis/desativáveis: Cabeçalho, Título, Corpo e Rodapé
+- Cor principal configurável por template
 
-**Use Lovable**
+### Campos Dinâmicos
+- **Campos personalizados**: crie variáveis e insira no corpo usando `{{nome_do_campo}}`
+- **Campos Elementor**: shortcodes compatíveis com o Elementor Forms:
+  - `[field id="name"]`, `[field id="email"]`, `[field id="message"]`
+  - `[field id="phone"]`, `[field id="company"]`, `[field id="date"]`
+  - `[field id="url"]`, `[field id="address"]`
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### Exportação / Importação
+- **Exportar JSON** — Salva toda a configuração do template para reutilização
+- **Exportar HTML** — Gera o HTML final pronto para uso em clientes de e-mail
+- **Importar JSON** — Carrega um template previamente salvo
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🛠️ Tecnologias
 
-**Use your preferred IDE**
+| Tecnologia | Uso |
+|---|---|
+| React 18 | Interface de usuário |
+| TypeScript | Tipagem estática |
+| Vite | Build e dev server |
+| Tailwind CSS | Estilização |
+| shadcn/ui | Componentes de UI |
+| Tiptap | Editor Rich Text |
+| Sonner | Notificações toast |
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## 📦 Instalação
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Clone o repositório
+git clone <URL_DO_REPOSITORIO>
+cd <NOME_DO_PROJETO>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Instale as dependências
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Inicie o servidor de desenvolvimento
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## 📁 Estrutura Principal
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```
+src/
+├── components/
+│   ├── EmailEditorForm.tsx    # Formulário de edição do e-mail
+│   ├── EmailPreview.tsx       # Preview em iframe
+│   ├── RichTextEditor.tsx     # Editor WYSIWYG (Tiptap)
+│   ├── TemplateSelector.tsx   # Seletor de templates
+│   └── SaveLoadTemplates.tsx  # Exportar/importar templates
+├── lib/
+│   └── emailTemplates.ts      # Geração de HTML dos 4 templates
+├── types/
+│   └── email.ts               # Tipos, constantes e campos Elementor
+└── pages/
+    └── Index.tsx               # Página principal
+```
 
-**Use GitHub Codespaces**
+## 🎯 Uso com Elementor
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Este editor gera HTML compatível com as configurações de envio de e-mail do Elementor Forms. Para usar:
 
-## What technologies are used for this project?
+1. Compose seu e-mail no editor
+2. Insira campos do Elementor via o botão **"Campos"** na barra de ferramentas
+3. Exporte o HTML e cole nas configurações de e-mail do Elementor
 
-This project is built with:
+## 📄 Licença
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+MIT
