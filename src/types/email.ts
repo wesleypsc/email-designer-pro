@@ -10,6 +10,13 @@ export interface CustomField {
   value: string;
 }
 
+export interface CTAButton {
+  id: string;
+  text: string;
+  url: string;
+  color: string;
+}
+
 export interface EmailData {
   templateId: string;
   headerMode: "text" | "image";
@@ -22,6 +29,7 @@ export interface EmailData {
   sections: EmailSection[];
   customFields: CustomField[];
   primaryColor: string;
+  ctaButtons: CTAButton[];
 }
 
 export interface EmailTemplate {
@@ -36,6 +44,7 @@ export const DEFAULT_SECTIONS: EmailSection[] = [
   { id: "header", label: "Cabeçalho", enabled: true },
   { id: "title", label: "Título", enabled: true },
   { id: "body", label: "Corpo", enabled: true },
+  { id: "cta", label: "Botão CTA", enabled: false },
   { id: "footer", label: "Rodapé", enabled: true },
 ];
 
@@ -93,4 +102,5 @@ export const DEFAULT_EMAIL_DATA: EmailData = {
   sections: [...DEFAULT_SECTIONS],
   customFields: [],
   primaryColor: "#1a365d",
+  ctaButtons: [],
 };
