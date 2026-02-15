@@ -5,6 +5,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2, Image, Type } from "lucide-react";
 import RichTextEditor from "@/components/RichTextEditor";
+import CTAEditor from "@/components/CTAEditor";
 import {
   Tabs,
   TabsContent,
@@ -287,6 +288,15 @@ const EmailEditorForm = ({ data, onChange }: EmailEditorFormProps) => {
           </div>
         ))}
       </div>
+
+      {/* CTA Buttons */}
+      {isSectionEnabled("cta") && (
+        <CTAEditor
+          buttons={data.ctaButtons}
+          onChange={(ctaButtons) => update({ ctaButtons })}
+          primaryColor={data.primaryColor}
+        />
+      )}
 
       {/* Footer - Rich Text */}
       {isSectionEnabled("footer") && (
